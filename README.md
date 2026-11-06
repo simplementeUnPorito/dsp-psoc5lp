@@ -70,14 +70,18 @@ docs/img/             Figures; measurements/ and oscilloscope/ captures
 - OrCAD Capture / PSpice (Cadence SPB 23.1) for `stethoscope/analog-front-end/simulation/`; TI vendor models must be added from the manufacturer.
 
 ### Results
-| | |
-|---|---|
-| ![FIR modes, ADC to PSoC output](docs/img/fir-modes-adc-to-psoc-output.jpg) | ![Heart FIR](docs/img/fir-heart.jpg) |
-| Magnitude and phase of the three implemented FIR filters, ADC input to PSoC output | Heart-mode FIR filter, magnitude and phase |
-| ![Heart chain response](docs/img/chain-to-reconstruction-heart.jpg) | ![Heart oscilloscope capture](docs/img/oscilloscope/heart.png) |
-| Heart-mode transfer function up to the reconstruction filter | Heart signal, input (pink) and output (green) |
-| ![Lung capture](docs/img/oscilloscope/lung-inspiration.jpg) | ![Diaphragm capture](docs/img/oscilloscope/diaphragm-speaking.png) |
-| Lung sound during inspiration | Diaphragm while speaking |
+
+**FIR filter bank (Kaiser window, 8 kHz)**
+<table><tr>
+<td align="center" width="33%"><img src="docs/img/fir-heart.jpg" width="380" alt="Heart band, 20–450 Hz"><br><sub>Heart band, 20–450 Hz</sub></td><td align="center" width="33%"><img src="docs/img/fir-lung.jpg" width="380" alt="Lung band, 100–1000 Hz"><br><sub>Lung band, 100–1000 Hz</sub></td><td align="center" width="33%"><img src="docs/img/fir-bowel.jpg" width="380" alt="Bowel band, 8–300 Hz"><br><sub>Bowel band, 8–300 Hz</sub></td>
+</tr></table>
+
+**End-to-end measurements**
+<table><tr>
+<td align="center" width="33%"><img src="docs/img/fir-modes-adc-to-psoc-output.jpg" width="380" alt="Three modes, ADC input to PSoC output"><br><sub>Three modes, ADC input to PSoC output</sub></td><td align="center" width="33%"><img src="docs/img/chain-to-reconstruction-heart.jpg" width="380" alt="Heart mode up to the reconstruction filter"><br><sub>Heart mode up to the reconstruction filter</sub></td><td align="center" width="33%"><img src="docs/img/oscilloscope/heart.png" width="380" alt="Heart sound: input (pink) vs filtered output (green)"><br><sub>Heart sound: input (pink) vs filtered output (green)</sub></td>
+</tr><tr>
+<td align="center" width="33%"><img src="docs/img/oscilloscope/lung-inspiration.jpg" width="380" alt="Lung sound during inspiration"><br><sub>Lung sound during inspiration</sub></td><td align="center" width="33%"><img src="docs/img/oscilloscope/diaphragm-speaking.png" width="380" alt="Diaphragm while speaking"><br><sub>Diaphragm while speaking</sub></td><td align="center" width="33%"><img src="docs/img/enclosure.png" width="380" alt="3D-printed sensor capsule and enclosure"><br><sub>3D-printed sensor capsule and enclosure</sub></td>
+</tr></table>
 
 More: measured gain and phase in [`docs/img/measurements/`](docs/img/measurements) and oscilloscope captures in [`docs/img/oscilloscope/`](docs/img/oscilloscope). Analog front-end and its test outcome: [`stethoscope/analog-front-end/`](stethoscope/analog-front-end/README.md). Studies: [FIR vs IIR](studies/fir-vs-iir-bandpass-on-psoc/README.md), [IIR over UART](studies/realtime-iir-uart-validation/README.md).
 
