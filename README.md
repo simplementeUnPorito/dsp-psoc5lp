@@ -6,8 +6,7 @@
 ## English
 
 ### Overview
-Auscultation with an acoustic stethoscope offers little control over amplification and filtering. This project builds an electronic stethoscope in two stages: an analog front-end for a PVDF piezoelectric film sensor (charge amplifier, instrumentation amplifier, 650 Hz low-pass, LM386 audio stage; simulated in PSpice and fabricated as a PCB), and a real-time DSP system on the PSoC 5LP that digitizes the signal at 8 kHz, applies a user-selectable linear-phase FIR filter for heart, lung or bowel sounds, and reconstructs the audio for a speaker. In the DSP system the sensor is a CM-01B contact microphone with built-in conditioning, so the charge-amplifier stages of the PVDF front-end are not in that path. The filter chain was designed in MATLAB/Simulink and measured on a breadboard with an oscilloscope.
-
+A digital electronic stethoscope built on a PSoC 5LP. It is a redesign of an earlier, fully analog stethoscope ([PVDF front-end with fixed analog filtering](https://github.com/simplementeUnPorito/analog-electronics-pcb/tree/main/projects/02-analog-electronic-stethoscope)): here the signal from a CM-01B contact microphone is digitized at 8 kHz, filtered in real time by a user-selectable linear-phase FIR filter for heart, lung or bowel sounds, and reconstructed for a speaker. Filter design was done in MATLAB/Simulink and the full chain was measured on a breadboard with an oscilloscope.
 
 <p align="center"><img src="docs/img/breadboard-full-system-enhanced.jpg" width="560" alt="Breadboard prototype of the electronic stethoscope with PSoC 5LP, OLED and 3D-printed sensor capsule"><br><sub>Breadboard prototype: PSoC 5LP, analog chain, OLED mode display and contact sensor.</sub></p>
 
@@ -17,33 +16,26 @@ Auscultation with an acoustic stethoscope offers little control over amplificati
 - Delta-sigma ADC in continuous mode (17 bits at 8 kHz, reduced to 16 bits for a 0.064 V range), two cascaded PGAs, DMA into the PSoC Filter block and a 12-bit DAC with saturation at 0xFF0.
 - Linear-phase FIR filters (Kaiser window, beta = 8) chosen over IIR, Parks-McClellan and least-squares to avoid phase distortion and passband ripple; coefficients swapped at run time through the Filter block RAM.
 - User interface: three debounced buttons (filter select, volume +/-) and an SSD1306 OLED showing mode and gain.
-- PVDF analog front-end with differential charge amplifier, active guard, INA128 and two PCB layouts (the compact one manufactured).
 - Measured gain and phase of every mode (anti-alias to DAC and to the audio output) and oscilloscope captures of heart, lung and bowel signals.
 
 ### System architecture
 ```mermaid
 flowchart LR
-  subgraph AFE[PVDF analog front-end - PCB]
-    PV[PVDF film] --> CA[Charge amplifier + guard] --> INA[INA128] --> LP650[650 Hz low-pass] --> LMA[LM386]
-  end
-  subgraph DSP[Real-time DSP chain - breadboard]
-    CM[CM-01B contact mic] --> AA[Bessel anti-alias, 4th order]
-    AA --> ADC[PSoC 5LP delta-sigma ADC, 8 kHz + PGA]
-    ADC --> FIR[FIR: heart / lung / bowel]
-    FIR --> DAC[12-bit DAC]
-    DAC --> REC[Bessel reconstruction filter]
-    REC --> LM[LM386 audio stage]
-    LM --> SPK[Speaker]
-    UI[Buttons + OLED] -.-> FIR
-    UI -.-> ADC
-  end
+  CM[CM-01B contact mic] --> AA[Bessel anti-alias, 4th order]
+  AA --> ADC[PSoC 5LP delta-sigma ADC, 8 kHz + PGA]
+  ADC --> FIR[FIR: heart / lung / bowel]
+  FIR --> DAC[12-bit DAC]
+  DAC --> REC[Bessel reconstruction filter]
+  REC --> LM[LM386 audio stage]
+  LM --> SPK[Speaker]
+  UI[Buttons + OLED] -.-> FIR
+  UI -.-> ADC
 ```
-The PVDF front-end conditions a charge-output sensor with fixed analog filtering; the DSP chain replaces that filtering with selectable digital filters.
+Compared with the analog version, the fixed analog filtering is replaced by three selectable digital filters and a gain control, and the band can be changed at run time.
 
 ### Hardware
 | Component | Role |
 |-----------|------|
-| PVDF piezo film, OPA338 / OPA350 / OPA337, INA128 | Analog front-end: charge amplifier, guard, reference, instrumentation amplifier |
 | CM-01B contact microphone | Voltage-output sensor in the DSP chain (datasheet not redistributed) |
 | PSoC 5LP | Delta-sigma ADC, PGAs, DMA, FIR Filter block, 12-bit DAC, button/OLED interface |
 | TL072 (OPA2337 tested), LM7805 | Reconstruction filter; 12 V supply with 5 V regulator |
@@ -54,7 +46,6 @@ The PVDF front-end conditions a charge-output sensor with fixed analog filtering
 ### Repository layout
 ```
 stethoscope/
-  analog-front-end/   PVDF front-end: PCB exports, OrCAD simulation, stage schematics
   dsp/                MATLAB scripts, Simulink/Simscape models, FIR coefficient tables, sensor capsule STL
   interface/          Button/debouncer circuit and UI description
   docs/               Pointer to figures and measurements
@@ -67,7 +58,6 @@ docs/img/             Figures; measurements/ and oscilloscope/ captures
 ### Getting started
 - MATLAB R2023b or later with Signal Processing, DSP System, Control System and Simscape toolboxes for `stethoscope/dsp/`.
 - PSoC Creator 4.x for the projects in `studies/` (the stethoscope firmware project itself was not recovered; see `stethoscope/dsp/README.md`).
-- OrCAD Capture / PSpice (Cadence SPB 23.1) for `stethoscope/analog-front-end/simulation/`; TI vendor models must be added from the manufacturer.
 
 ### Results
 
@@ -83,17 +73,15 @@ docs/img/             Figures; measurements/ and oscilloscope/ captures
 <td align="center" width="33%"><img src="docs/img/oscilloscope/lung-inspiration.jpg" width="380" alt="Lung sound during inspiration"><br><sub>Lung sound during inspiration</sub></td><td align="center" width="33%"><img src="docs/img/oscilloscope/diaphragm-speaking.png" width="380" alt="Diaphragm while speaking"><br><sub>Diaphragm while speaking</sub></td><td align="center" width="33%"><img src="docs/img/enclosure.png" width="380" alt="3D-printed sensor capsule and enclosure"><br><sub>3D-printed sensor capsule and enclosure</sub></td>
 </tr></table>
 
-More: measured gain and phase in [`docs/img/measurements/`](docs/img/measurements) and oscilloscope captures in [`docs/img/oscilloscope/`](docs/img/oscilloscope). Analog front-end and its test outcome: [`stethoscope/analog-front-end/`](stethoscope/analog-front-end/README.md). Studies: [FIR vs IIR](studies/fir-vs-iir-bandpass-on-psoc/README.md), [IIR over UART](studies/realtime-iir-uart-validation/README.md).
+More: measured gain and phase in [`docs/img/measurements/`](docs/img/measurements) and oscilloscope captures in [`docs/img/oscilloscope/`](docs/img/oscilloscope). Studies: [FIR vs IIR](studies/fir-vs-iir-bandpass-on-psoc/README.md), [IIR over UART](studies/realtime-iir-uart-validation/README.md).
 
 Reported limitations: supply noise (solved with an independent supply), output ripple above the estimate, attenuation in the PSoC input buffer, and an LM386 that could not drive the woofer used as load; proposed fixes are a class-AB or dedicated power stage and better op-amps.
 
-### PCB
-The PVDF front-end was fabricated (compact layout); exports are in [`stethoscope/analog-front-end/hardware/pcb/`](stethoscope/analog-front-end/hardware/pcb/README.md). The DSP chain was built on a breadboard.
-
-<p align="center"><img src="stethoscope/analog-front-end/hardware/pcb/layout-compact-top.png" width="320" alt="Compact layout top"> <img src="stethoscope/analog-front-end/hardware/pcb/layout-compact-bottom.png" width="320" alt="Compact layout bottom"></p>
+### Analog predecessor
+The fully analog version of the stethoscope (PVDF sensor, charge amplifier, INA128, fabricated PCB) is a separate project: [analog-electronics-pcb / analog electronic stethoscope](https://github.com/simplementeUnPorito/analog-electronics-pcb/tree/main/projects/02-analog-electronic-stethoscope).
 
 ### Team & credits
-- Analog front-end (2024) and DSP system (2025): developed by Elías Álvarez and Tania Romero at Universidad Católica "Nuestra Señora de la Asunción" (Paraguay).
+- Digital stethoscope (2025): developed by Elías Álvarez and Tania Romero at Universidad Católica "Nuestra Señora de la Asunción" (Paraguay).
 - Studies in `studies/`: Elías David Álvarez Martínez and Tania Patricia Romero Centurión, 2024; advisor Lic. Federico Daniel Morán Fretes.
 
 ### License
@@ -102,7 +90,7 @@ MIT (see `LICENSE`). Figures are shared for reference. Third-party datasheets an
 ## Español
 
 ### Descripción
-La auscultación con estetoscopio acústico ofrece poco control de amplificación y filtrado. Este proyecto construye un estetoscopio electrónico en dos etapas: un front-end analógico para un sensor piezoeléctrico de película PVDF (amplificador de carga, INA128, pasa-bajos de 650 Hz y etapa de audio LM386; simulado en PSpice y fabricado como PCB) y un sistema DSP en tiempo real sobre el PSoC 5LP que digitaliza a 8 kHz, aplica un filtro FIR de fase lineal seleccionable (corazón, pulmón o intestino) y reconstruye el audio para un parlante. En el sistema DSP el sensor es un micrófono de contacto CM-01B con acondicionamiento integrado, por lo que las etapas de carga del front-end PVDF no están en ese camino. La cadena se diseñó en MATLAB/Simulink y se midió en protoboard con osciloscopio.
+Estetoscopio electrónico digital sobre PSoC 5LP. Es un rediseño de un estetoscopio anterior totalmente analógico ([front-end PVDF con filtrado analógico fijo](https://github.com/simplementeUnPorito/analog-electronics-pcb/tree/main/projects/02-analog-electronic-stethoscope)): acá la señal de un micrófono de contacto CM-01B se digitaliza a 8 kHz, se filtra en tiempo real con un FIR de fase lineal seleccionable (corazón, pulmón o intestino) y se reconstruye para un parlante. Los filtros se diseñaron en MATLAB/Simulink y la cadena completa se midió en protoboard con osciloscopio.
 
 ### Puntos destacados
 - Bandas de interés: corazón 20-450 Hz, pulmón 100-1000 Hz, intestino 8-300 Hz; muestreo a 8 kHz.
@@ -110,23 +98,22 @@ La auscultación con estetoscopio acústico ofrece poco control de amplificació
 - ADC delta-sigma continuo (17 bits a 8 kHz, reducido a 16 bits para un rango de 0,064 V), dos PGA en cascada, DMA hacia el bloque Filter y DAC de 12 bits con saturación en 0xFF0.
 - FIR de fase lineal (ventana Kaiser, beta = 8) frente a IIR, Parks-McClellan y mínimos cuadrados; coeficientes intercambiados en ejecución.
 - Interfaz: tres botones con antirrebote por hardware y pantalla OLED SSD1306.
-- Front-end PVDF con amplificador de carga diferencial, guarda activa, INA128 y dos diseños de PCB (se fabricó el compacto).
 - Mediciones de ganancia y fase por modo y capturas de osciloscopio de señales cardíacas, pulmonares e intestinales.
 
 ### Arquitectura, hardware y estructura
-Ver el diagrama mermaid, la tabla y el árbol de la sección en inglés. `stethoscope/analog-front-end/` contiene el front-end PVDF; `stethoscope/dsp/` los scripts, modelos y tablas de coeficientes; `stethoscope/interface/` la interfaz; `studies/` los dos estudios.
+Ver el diagrama mermaid, la tabla y el árbol de la sección en inglés. `stethoscope/dsp/` los scripts, modelos y tablas de coeficientes; `stethoscope/interface/` la interfaz; `studies/` los dos estudios.
 
 ### Cómo empezar
-MATLAB R2023b o superior (Señales, DSP, Control, Simscape); PSoC Creator 4.x para `studies/` (el proyecto de firmware del estetoscopio no se recuperó); OrCAD Capture/PSpice para la simulación analógica (modelos de TI aparte).
+MATLAB R2023b o superior (Señales, DSP, Control, Simscape); PSoC Creator 4.x para `studies/` (el proyecto de firmware del estetoscopio no se recuperó).
 
 ### Resultados
 Ver las figuras de arriba, `docs/img/measurements/` y `docs/img/oscilloscope/`. Limitaciones informadas: ruido de fuente (resuelto con fuente independiente), ripple de salida mayor al estimado, atenuación en el buffer del PSoC y un LM386 que no pudo excitar el woofer usado como carga.
 
-### PCB
-El front-end PVDF se fabricó (diseño compacto); ver `stethoscope/analog-front-end/hardware/pcb/`. La cadena DSP se armó en protoboard.
+### Antecesor analógico
+La versión totalmente analógica (sensor PVDF, amplificador de carga, INA128, PCB fabricada) es un proyecto aparte: [estetoscopio analógico](https://github.com/simplementeUnPorito/analog-electronics-pcb/tree/main/projects/02-analog-electronic-stethoscope).
 
 ### Equipo y créditos
-- Front-end analógico (2024) y sistema DSP (2025): Elías Álvarez y Tania Romero, Universidad Católica "Nuestra Señora de la Asunción" (Paraguay).
+- Estetoscopio digital (2025): Elías Álvarez y Tania Romero, Universidad Católica "Nuestra Señora de la Asunción" (Paraguay).
 - Estudios: Elías David Álvarez Martínez y Tania Patricia Romero Centurión, 2024; tutor Lic. Federico Daniel Morán Fretes.
 
 ### Licencia
