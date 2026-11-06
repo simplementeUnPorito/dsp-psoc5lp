@@ -1,0 +1,260 @@
+component lm386
+% lm386
+% Component automatically generated from a SPICE netlist for subcircuit LM386.
+%   MATLAB version: 23.2.
+%   Simscape Electrical version: 23.2.
+%   Simscape code generated on: 07-Jan-2025 19:33:49
+%
+% The subcircuit2ssc function does not support these SPICE parameters:
+%    Q10: nk = 0.5
+%    Q11: nk = 0.5
+%    Q12: nk = 0.5
+%    Q13: nk = 0.5
+%    Q14: nk = 0.5
+%    Q1: nk = 0.5
+%    Q2: nk = 0.5
+%    Q3: nk = 0.5
+%    Q4: nk = 0.5
+%    Q5: nk = 0.5
+%    Q6: nk = 0.5
+%    Q7: nk = 0.5
+%    Q8: nk = 0.5
+%    Q9: nk = 0.5
+%    lm386: .ac dec 20 1 1e7
+%    lm386: .end
+%    lm386: .probe
+%    lm386: .tran 1u 3m 0 5u
+% If possible, you have to manually implement them to achieve complete
+% functionality. Refer to the documentation page of the blocks relevant to
+% your conversion inside the Simscape Electrical Additional Components
+% library.
+
+
+    nodes
+        inn = foundation.electrical.electrical; % inn
+        inp = foundation.electrical.electrical; % inp
+        byp = foundation.electrical.electrical; % byp
+        g1 = foundation.electrical.electrical; % g1
+        g8 = foundation.electrical.electrical; % g8
+        out = foundation.electrical.electrical; % out
+        vs = foundation.electrical.electrical; % vs
+        gnd = foundation.electrical.electrical; % gnd
+    end
+
+    nodes(Access=protected, ExternalAccess=none)
+        node_10011 = foundation.electrical.electrical;
+        node_10012 = foundation.electrical.electrical;
+        node_10013 = foundation.electrical.electrical;
+        node_10008 = foundation.electrical.electrical;
+        node_10014 = foundation.electrical.electrical;
+        node_10017 = foundation.electrical.electrical;
+        node_10002 = foundation.electrical.electrical;
+        node_10004 = foundation.electrical.electrical;
+        node_10018 = foundation.electrical.electrical;
+        node_10009 = foundation.electrical.electrical;
+    end
+
+    annotations
+        inn: Side = left;
+        inp: Side = left;
+        byp: Side = bottom;
+        g1: Side = top;
+        g8: Side = top;
+        out: Side = right;
+        vs: Side = top;
+        gnd: Side = bottom;
+        UILayout = [
+            UIGroup('Parasitic elements', ...
+                    specifyParasiticValues, capacitorSeriesResistance)
+                   ]
+    end
+
+    parameters
+        specifyParasiticValues = ee.enum.include.no;    % Specify parasitic values
+    end
+
+    parameters(ExternalAccess=none)
+        capacitorSeriesResistance = {0, 'Ohm'};    % Capacitor parasitic series resistance
+    end
+
+    if specifyParasiticValues == ee.enum.include.yes
+        annotations
+            [capacitorSeriesResistance] : ExternalAccess=modify;
+        end
+    end
+
+    components(ExternalAccess=observe)
+        Q1 = ee.additional.spice_semiconductors.spice_pnp(AREA={1,'m^2'},BF={200,'1'},BR={1,'1'},CJC={2e-12,'F/m^2'}, ...
+            CJE={5e-12,'F/m^2'},CJS={0,'F/m^2'},EG={1.11,'eV'},FC={0.5,'1'},IKF={1e-3,'A/m^2'},IKR={1e-3,'A/m^2'},IRB={Inf,'A/m^2'}, ...
+            IS={1e-14,'A/m^2'},ISC={0,'A/m^2'},ISE={0,'A/m^2'},ITF={1,'A/m^2'},MJC={0.3333,'1'},MJE={0.3333,'1'}, ...
+            MJS={0,'1'},NC={2,'1'},NE={1.5,'1'},NF={1,'1'},NR={1,'1'},RB={0,'Ohm*m^2'},RBM={0,'Ohm*m^2'},RC={0,'Ohm*m^2'}, ...
+            RE={0,'Ohm*m^2'},TF={1e-09,'s'},TR={1e-08,'s'},VAF={100,'V'},VAR={100,'V'},VJC={0.75,'V'},VJE={0.75,'V'}, ...
+            VJS={0.75,'V'},VTF={10,'V'},XCJC={1,'1'},XTB={1.5,'1'},XTF={0,'1'},XTI={3,'1'},C_param=2);
+        R1 = foundation.electrical.elements.resistor(R={(50*1000),'Ohm'});
+        Q2 = ee.additional.spice_semiconductors.spice_pnp(AREA={1,'m^2'},BF={200,'1'},BR={1,'1'},CJC={2e-12,'F/m^2'}, ...
+            CJE={5e-12,'F/m^2'},CJS={0,'F/m^2'},EG={1.11,'eV'},FC={0.5,'1'},IKF={1e-3,'A/m^2'},IKR={1e-3,'A/m^2'},IRB={Inf,'A/m^2'}, ...
+            IS={1e-14,'A/m^2'},ISC={0,'A/m^2'},ISE={0,'A/m^2'},ITF={1,'A/m^2'},MJC={0.3333,'1'},MJE={0.3333,'1'}, ...
+            MJS={0,'1'},NC={2,'1'},NE={1.5,'1'},NF={1,'1'},NR={1,'1'},RB={0,'Ohm*m^2'},RBM={0,'Ohm*m^2'},RC={0,'Ohm*m^2'}, ...
+            RE={0,'Ohm*m^2'},TF={1e-09,'s'},TR={1e-08,'s'},VAF={100,'V'},VAR={100,'V'},VJC={0.75,'V'},VJE={0.75,'V'}, ...
+            VJS={0.75,'V'},VTF={10,'V'},XCJC={1,'1'},XTB={1.5,'1'},XTF={0,'1'},XTI={3,'1'},C_param=2);
+        R2 = foundation.electrical.elements.resistor(R={(50*1000),'Ohm'});
+        Q3 = ee.additional.spice_semiconductors.spice_pnp(AREA={1,'m^2'},BF={200,'1'},BR={1,'1'},CJC={2e-12,'F/m^2'}, ...
+            CJE={5e-12,'F/m^2'},CJS={0,'F/m^2'},EG={1.11,'eV'},FC={0.5,'1'},IKF={1e-3,'A/m^2'},IKR={1e-3,'A/m^2'},IRB={Inf,'A/m^2'}, ...
+            IS={1e-14,'A/m^2'},ISC={0,'A/m^2'},ISE={0,'A/m^2'},ITF={1,'A/m^2'},MJC={0.3333,'1'},MJE={0.3333,'1'}, ...
+            MJS={0,'1'},NC={2,'1'},NE={1.5,'1'},NF={1,'1'},NR={1,'1'},RB={0,'Ohm*m^2'},RBM={0,'Ohm*m^2'},RC={0,'Ohm*m^2'}, ...
+            RE={0,'Ohm*m^2'},TF={1e-09,'s'},TR={1e-08,'s'},VAF={100,'V'},VAR={100,'V'},VJC={0.75,'V'},VJE={0.75,'V'}, ...
+            VJS={0.75,'V'},VTF={10,'V'},XCJC={1,'1'},XTB={1.5,'1'},XTF={0,'1'},XTI={3,'1'},C_param=2);
+        Q4 = ee.additional.spice_semiconductors.spice_pnp(AREA={1,'m^2'},BF={200,'1'},BR={1,'1'},CJC={2e-12,'F/m^2'}, ...
+            CJE={5e-12,'F/m^2'},CJS={0,'F/m^2'},EG={1.11,'eV'},FC={0.5,'1'},IKF={1e-3,'A/m^2'},IKR={1e-3,'A/m^2'},IRB={Inf,'A/m^2'}, ...
+            IS={1e-14,'A/m^2'},ISC={0,'A/m^2'},ISE={0,'A/m^2'},ITF={1,'A/m^2'},MJC={0.3333,'1'},MJE={0.3333,'1'}, ...
+            MJS={0,'1'},NC={2,'1'},NE={1.5,'1'},NF={1,'1'},NR={1,'1'},RB={0,'Ohm*m^2'},RBM={0,'Ohm*m^2'},RC={0,'Ohm*m^2'}, ...
+            RE={0,'Ohm*m^2'},TF={1e-09,'s'},TR={1e-08,'s'},VAF={100,'V'},VAR={100,'V'},VJC={0.75,'V'},VJE={0.75,'V'}, ...
+            VJS={0.75,'V'},VTF={10,'V'},XCJC={1,'1'},XTB={1.5,'1'},XTF={0,'1'},XTI={3,'1'},C_param=2);
+        R3 = foundation.electrical.elements.resistor(R={(15*1000),'Ohm'});
+        R4 = foundation.electrical.elements.resistor(R={(15*1000),'Ohm'});
+        R5 = foundation.electrical.elements.resistor(R={150,'Ohm'});
+        R6 = foundation.electrical.elements.resistor(R={(1.35*1000),'Ohm'});
+        R7 = foundation.electrical.elements.resistor(R={(15*1000),'Ohm'});
+        Q5 = ee.additional.spice_semiconductors.spice_npn(AREA={1,'m^2'},BF={400,'1'},BR={1,'1'},CJC={2e-12,'F/m^2'}, ...
+            CJE={5e-12,'F/m^2'},CJS={0,'F/m^2'},EG={1.11,'eV'},FC={0.5,'1'},IKF={1e-3,'A/m^2'},IKR={1e-3,'A/m^2'},IRB={Inf,'A/m^2'}, ...
+            IS={1e-14,'A/m^2'},ISC={0,'A/m^2'},ISE={0,'A/m^2'},ITF={1,'A/m^2'},MJC={0.3333,'1'},MJE={0.3333,'1'}, ...
+            MJS={0,'1'},NC={2,'1'},NE={1.5,'1'},NF={1,'1'},NR={1,'1'},RB={0,'Ohm*m^2'},RBM={0,'Ohm*m^2'},RC={0,'Ohm*m^2'}, ...
+            RE={0,'Ohm*m^2'},TF={1e-09,'s'},TR={1e-08,'s'},VAF={100,'V'},VAR={100,'V'},VJC={0.75,'V'},VJE={0.75,'V'}, ...
+            VJS={0.75,'V'},VTF={10,'V'},XCJC={1,'1'},XTB={1.5,'1'},XTF={0,'1'},XTI={3,'1'},C_param=2);
+        Q6 = ee.additional.spice_semiconductors.spice_npn(AREA={1,'m^2'},BF={400,'1'},BR={1,'1'},CJC={2e-12,'F/m^2'}, ...
+            CJE={5e-12,'F/m^2'},CJS={0,'F/m^2'},EG={1.11,'eV'},FC={0.5,'1'},IKF={1e-3,'A/m^2'},IKR={1e-3,'A/m^2'},IRB={Inf,'A/m^2'}, ...
+            IS={1e-14,'A/m^2'},ISC={0,'A/m^2'},ISE={0,'A/m^2'},ITF={1,'A/m^2'},MJC={0.3333,'1'},MJE={0.3333,'1'}, ...
+            MJS={0,'1'},NC={2,'1'},NE={1.5,'1'},NF={1,'1'},NR={1,'1'},RB={0,'Ohm*m^2'},RBM={0,'Ohm*m^2'},RC={0,'Ohm*m^2'}, ...
+            RE={0,'Ohm*m^2'},TF={1e-09,'s'},TR={1e-08,'s'},VAF={100,'V'},VAR={100,'V'},VJC={0.75,'V'},VJE={0.75,'V'}, ...
+            VJS={0.75,'V'},VTF={10,'V'},XCJC={1,'1'},XTB={1.5,'1'},XTF={0,'1'},XTI={3,'1'},C_param=2);
+        Q7 = ee.additional.spice_semiconductors.spice_npn(AREA={1,'m^2'},BF={400,'1'},BR={1,'1'},CJC={2e-12,'F/m^2'}, ...
+            CJE={5e-12,'F/m^2'},CJS={0,'F/m^2'},EG={1.11,'eV'},FC={0.5,'1'},IKF={1e-3,'A/m^2'},IKR={1e-3,'A/m^2'},IRB={Inf,'A/m^2'}, ...
+            IS={1e-14,'A/m^2'},ISC={0,'A/m^2'},ISE={0,'A/m^2'},ITF={1,'A/m^2'},MJC={0.3333,'1'},MJE={0.3333,'1'}, ...
+            MJS={0,'1'},NC={2,'1'},NE={1.5,'1'},NF={1,'1'},NR={1,'1'},RB={0,'Ohm*m^2'},RBM={0,'Ohm*m^2'},RC={0,'Ohm*m^2'}, ...
+            RE={0,'Ohm*m^2'},TF={1e-09,'s'},TR={1e-08,'s'},VAF={100,'V'},VAR={100,'V'},VJC={0.75,'V'},VJE={0.75,'V'}, ...
+            VJS={0.75,'V'},VTF={10,'V'},XCJC={1,'1'},XTB={1.5,'1'},XTF={0,'1'},XTI={3,'1'},C_param=2);
+        C1 = foundation.electrical.elements.capacitor(c={(15*1e-12),'F'},r=capacitorSeriesResistance,g={0,'1/Ohm'}, ...
+            vc.priority=priority.none);
+        I1 = ee.sources.current_source(dc_current={-(5*0.001),'A'});
+        Q8 = ee.additional.spice_semiconductors.spice_pnp(AREA={1,'m^2'},BF={200,'1'},BR={1,'1'},CJC={2e-12,'F/m^2'}, ...
+            CJE={5e-12,'F/m^2'},CJS={0,'F/m^2'},EG={1.11,'eV'},FC={0.5,'1'},IKF={1e-3,'A/m^2'},IKR={1e-3,'A/m^2'},IRB={Inf,'A/m^2'}, ...
+            IS={1e-14,'A/m^2'},ISC={0,'A/m^2'},ISE={0,'A/m^2'},ITF={1,'A/m^2'},MJC={0.3333,'1'},MJE={0.3333,'1'}, ...
+            MJS={0,'1'},NC={2,'1'},NE={1.5,'1'},NF={1,'1'},NR={1,'1'},RB={0,'Ohm*m^2'},RBM={0,'Ohm*m^2'},RC={0,'Ohm*m^2'}, ...
+            RE={0,'Ohm*m^2'},TF={1e-09,'s'},TR={1e-08,'s'},VAF={100,'V'},VAR={100,'V'},VJC={0.75,'V'},VJE={0.75,'V'}, ...
+            VJS={0.75,'V'},VTF={10,'V'},XCJC={1,'1'},XTB={1.5,'1'},XTF={0,'1'},XTI={3,'1'},C_param=2);
+        Q9 = ee.additional.spice_semiconductors.spice_pnp(AREA={1,'m^2'},BF={200,'1'},BR={1,'1'},CJC={2e-12,'F/m^2'}, ...
+            CJE={5e-12,'F/m^2'},CJS={0,'F/m^2'},EG={1.11,'eV'},FC={0.5,'1'},IKF={1e-3,'A/m^2'},IKR={1e-3,'A/m^2'},IRB={Inf,'A/m^2'}, ...
+            IS={1e-14,'A/m^2'},ISC={0,'A/m^2'},ISE={0,'A/m^2'},ITF={1,'A/m^2'},MJC={0.3333,'1'},MJE={0.3333,'1'}, ...
+            MJS={0,'1'},NC={2,'1'},NE={1.5,'1'},NF={1,'1'},NR={1,'1'},RB={0,'Ohm*m^2'},RBM={0,'Ohm*m^2'},RC={0,'Ohm*m^2'}, ...
+            RE={0,'Ohm*m^2'},TF={1e-09,'s'},TR={1e-08,'s'},VAF={100,'V'},VAR={100,'V'},VJC={0.75,'V'},VJE={0.75,'V'}, ...
+            VJS={0.75,'V'},VTF={10,'V'},XCJC={1,'1'},XTB={1.5,'1'},XTF={0,'1'},XTI={3,'1'},C_param=2);
+        Q10 = ee.additional.spice_semiconductors.spice_pnp(AREA={1,'m^2'},BF={200,'1'},BR={1,'1'},CJC={2e-12,'F/m^2'}, ...
+            CJE={5e-12,'F/m^2'},CJS={0,'F/m^2'},EG={1.11,'eV'},FC={0.5,'1'},IKF={1e-3,'A/m^2'},IKR={1e-3,'A/m^2'},IRB={Inf,'A/m^2'}, ...
+            IS={1e-14,'A/m^2'},ISC={0,'A/m^2'},ISE={0,'A/m^2'},ITF={1,'A/m^2'},MJC={0.3333,'1'},MJE={0.3333,'1'}, ...
+            MJS={0,'1'},NC={2,'1'},NE={1.5,'1'},NF={1,'1'},NR={1,'1'},RB={0,'Ohm*m^2'},RBM={0,'Ohm*m^2'},RC={0,'Ohm*m^2'}, ...
+            RE={0,'Ohm*m^2'},TF={1e-09,'s'},TR={1e-08,'s'},VAF={100,'V'},VAR={100,'V'},VJC={0.75,'V'},VJE={0.75,'V'}, ...
+            VJS={0.75,'V'},VTF={10,'V'},XCJC={1,'1'},XTB={1.5,'1'},XTF={0,'1'},XTI={3,'1'},C_param=2);
+        Q11 = ee.additional.spice_semiconductors.spice_npn(AREA={100,'m^2'},BF={400,'1'},BR={1,'1'},CJC={2e-12,'F/m^2'}, ...
+            CJE={5e-12,'F/m^2'},CJS={0,'F/m^2'},EG={1.11,'eV'},FC={0.5,'1'},IKF={1e-3,'A/m^2'},IKR={1e-3,'A/m^2'},IRB={Inf,'A/m^2'}, ...
+            IS={1e-14,'A/m^2'},ISC={0,'A/m^2'},ISE={0,'A/m^2'},ITF={1,'A/m^2'},MJC={0.3333,'1'},MJE={0.3333,'1'}, ...
+            MJS={0,'1'},NC={2,'1'},NE={1.5,'1'},NF={1,'1'},NR={1,'1'},RB={0,'Ohm*m^2'},RBM={0,'Ohm*m^2'},RC={0,'Ohm*m^2'}, ...
+            RE={0,'Ohm*m^2'},TF={1e-09,'s'},TR={1e-08,'s'},VAF={100,'V'},VAR={100,'V'},VJC={0.75,'V'},VJE={0.75,'V'}, ...
+            VJS={0.75,'V'},VTF={10,'V'},XCJC={1,'1'},XTB={1.5,'1'},XTF={0,'1'},XTI={3,'1'},C_param=2);
+        Q12 = ee.additional.spice_semiconductors.spice_npn(AREA={100,'m^2'},BF={400,'1'},BR={1,'1'},CJC={2e-12,'F/m^2'}, ...
+            CJE={5e-12,'F/m^2'},CJS={0,'F/m^2'},EG={1.11,'eV'},FC={0.5,'1'},IKF={1e-3,'A/m^2'},IKR={1e-3,'A/m^2'},IRB={Inf,'A/m^2'}, ...
+            IS={1e-14,'A/m^2'},ISC={0,'A/m^2'},ISE={0,'A/m^2'},ITF={1,'A/m^2'},MJC={0.3333,'1'},MJE={0.3333,'1'}, ...
+            MJS={0,'1'},NC={2,'1'},NE={1.5,'1'},NF={1,'1'},NR={1,'1'},RB={0,'Ohm*m^2'},RBM={0,'Ohm*m^2'},RC={0,'Ohm*m^2'}, ...
+            RE={0,'Ohm*m^2'},TF={1e-09,'s'},TR={1e-08,'s'},VAF={100,'V'},VAR={100,'V'},VJC={0.75,'V'},VJE={0.75,'V'}, ...
+            VJS={0.75,'V'},VTF={10,'V'},XCJC={1,'1'},XTB={1.5,'1'},XTF={0,'1'},XTI={3,'1'},C_param=2);
+        Q13 = ee.additional.spice_semiconductors.spice_npn(AREA={100,'m^2'},BF={400,'1'},BR={1,'1'},CJC={2e-12,'F/m^2'}, ...
+            CJE={5e-12,'F/m^2'},CJS={0,'F/m^2'},EG={1.11,'eV'},FC={0.5,'1'},IKF={1e-3,'A/m^2'},IKR={1e-3,'A/m^2'},IRB={Inf,'A/m^2'}, ...
+            IS={1e-14,'A/m^2'},ISC={0,'A/m^2'},ISE={0,'A/m^2'},ITF={1,'A/m^2'},MJC={0.3333,'1'},MJE={0.3333,'1'}, ...
+            MJS={0,'1'},NC={2,'1'},NE={1.5,'1'},NF={1,'1'},NR={1,'1'},RB={0,'Ohm*m^2'},RBM={0,'Ohm*m^2'},RC={0,'Ohm*m^2'}, ...
+            RE={0,'Ohm*m^2'},TF={1e-09,'s'},TR={1e-08,'s'},VAF={100,'V'},VAR={100,'V'},VJC={0.75,'V'},VJE={0.75,'V'}, ...
+            VJS={0.75,'V'},VTF={10,'V'},XCJC={1,'1'},XTB={1.5,'1'},XTF={0,'1'},XTI={3,'1'},C_param=2);
+        Q14 = ee.additional.spice_semiconductors.spice_npn(AREA={100,'m^2'},BF={400,'1'},BR={1,'1'},CJC={2e-12,'F/m^2'}, ...
+            CJE={5e-12,'F/m^2'},CJS={0,'F/m^2'},EG={1.11,'eV'},FC={0.5,'1'},IKF={1e-3,'A/m^2'},IKR={1e-3,'A/m^2'},IRB={Inf,'A/m^2'}, ...
+            IS={1e-14,'A/m^2'},ISC={0,'A/m^2'},ISE={0,'A/m^2'},ITF={1,'A/m^2'},MJC={0.3333,'1'},MJE={0.3333,'1'}, ...
+            MJS={0,'1'},NC={2,'1'},NE={1.5,'1'},NF={1,'1'},NR={1,'1'},RB={0,'Ohm*m^2'},RBM={0,'Ohm*m^2'},RC={0,'Ohm*m^2'}, ...
+            RE={0,'Ohm*m^2'},TF={1e-09,'s'},TR={1e-08,'s'},VAF={100,'V'},VAR={100,'V'},VJC={0.75,'V'},VJE={0.75,'V'}, ...
+            VJS={0.75,'V'},VTF={10,'V'},XCJC={1,'1'},XTB={1.5,'1'},XTF={0,'1'},XTI={3,'1'},C_param=2);
+    end
+
+    connections
+        connect(Q1.cx,gnd);
+        connect(Q1.bx,inn);
+        connect(Q1.ex,node_10011);
+        connect(Q1.sx,*);
+        connect(R1.p,inn);
+        connect(R1.n,gnd);
+        connect(Q2.cx,gnd);
+        connect(Q2.bx,inp);
+        connect(Q2.ex,node_10012);
+        connect(Q2.sx,*);
+        connect(R2.p,inp);
+        connect(R2.n,gnd);
+        connect(Q3.cx,node_10013);
+        connect(Q3.bx,node_10011);
+        connect(Q3.ex,node_10008);
+        connect(Q3.sx,*);
+        connect(Q4.cx,node_10014);
+        connect(Q4.bx,node_10012);
+        connect(Q4.ex,g1);
+        connect(Q4.sx,*);
+        connect(R3.p,vs);
+        connect(R3.n,byp);
+        connect(R4.p,byp);
+        connect(R4.n,node_10008);
+        connect(R5.p,node_10008);
+        connect(R5.n,g8);
+        connect(R6.p,g8);
+        connect(R6.n,g1);
+        connect(R7.p,g1);
+        connect(R7.n,out);
+        connect(Q5.cx,node_10013);
+        connect(Q5.bx,node_10013);
+        connect(Q5.ex,gnd);
+        connect(Q5.sx,*);
+        connect(Q6.cx,node_10014);
+        connect(Q6.bx,node_10013);
+        connect(Q6.ex,gnd);
+        connect(Q6.sx,*);
+        connect(Q7.cx,node_10017);
+        connect(Q7.bx,node_10014);
+        connect(Q7.ex,gnd);
+        connect(Q7.sx,*);
+        connect(C1.p,node_10014);
+        connect(C1.n,node_10017);
+        connect(I1.p,node_10002);
+        connect(I1.n,vs);
+        connect(Q8.cx,node_10004);
+        connect(Q8.bx,node_10002);
+        connect(Q8.ex,vs);
+        connect(Q8.sx,*);
+        connect(Q9.cx,node_10002);
+        connect(Q9.bx,node_10002);
+        connect(Q9.ex,vs);
+        connect(Q9.sx,*);
+        connect(Q10.cx,node_10018);
+        connect(Q10.bx,node_10017);
+        connect(Q10.ex,out);
+        connect(Q10.sx,*);
+        connect(Q11.cx,node_10004);
+        connect(Q11.bx,node_10004);
+        connect(Q11.ex,node_10009);
+        connect(Q11.sx,*);
+        connect(Q12.cx,node_10009);
+        connect(Q12.bx,node_10009);
+        connect(Q12.ex,node_10017);
+        connect(Q12.sx,*);
+        connect(Q13.cx,vs);
+        connect(Q13.bx,node_10004);
+        connect(Q13.ex,out);
+        connect(Q13.sx,*);
+        connect(Q14.cx,out);
+        connect(Q14.bx,node_10018);
+        connect(Q14.ex,gnd);
+        connect(Q14.sx,*);
+    end
+
+end
