@@ -1,13 +1,15 @@
-<p align="center"><img src="docs/img/breadboard-full-system.jpg" width="720" alt="Breadboard prototype of the electronic stethoscope with PSoC 5LP, OLED and 3D-printed sensor capsule"></p>
-<h1 align="center">Electronic Stethoscope: PVDF Front-End and Real-Time DSP on PSoC 5LP</h1>
-<p align="center"><b>Analog acquisition, selectable heart / lung / bowel FIR filtering on a PSoC 5LP, and an audio output stage, from simulation to breadboard measurements.</b><br>
-<img src="https://img.shields.io/badge/PSoC-5LP-1f6feb"> <img src="https://img.shields.io/badge/MATLAB-Simulink-orange"> <img src="https://img.shields.io/badge/OrCAD-PSpice-informational"> <img src="https://img.shields.io/badge/EasyEDA-PCB-informational"> <img src="https://img.shields.io/badge/C-firmware-555"> <img src="https://img.shields.io/badge/License-MIT-lightgrey"></p>
+<p align="center"><img src="docs/img/banner.svg" width="100%" alt="Electronic Stethoscope &amp; Real-Time DSP"></p>
+
+<p align="center"><img src="https://img.shields.io/badge/PSoC-5LP-1f6feb"> <img src="https://img.shields.io/badge/MATLAB-Simulink-orange"> <img src="https://img.shields.io/badge/OrCAD-PSpice-informational"> <img src="https://img.shields.io/badge/EasyEDA-PCB-informational"> <img src="https://img.shields.io/badge/C-firmware-555"> <img src="https://img.shields.io/badge/License-MIT-lightgrey"></p>
 <p align="center"><a href="#english">English</a> · <a href="#español">Español</a></p>
 
 ## English
 
 ### Overview
 Auscultation with an acoustic stethoscope offers little control over amplification and filtering. This project builds an electronic stethoscope in two stages: an analog front-end for a PVDF piezoelectric film sensor (charge amplifier, instrumentation amplifier, 650 Hz low-pass, LM386 audio stage; simulated in PSpice and fabricated as a PCB), and a real-time DSP system on the PSoC 5LP that digitizes the signal at 8 kHz, applies a user-selectable linear-phase FIR filter for heart, lung or bowel sounds, and reconstructs the audio for a speaker. In the DSP system the sensor is a CM-01B contact microphone with built-in conditioning, so the charge-amplifier stages of the PVDF front-end are not in that path. The filter chain was designed in MATLAB/Simulink and measured on a breadboard with an oscilloscope.
+
+
+<p align="center"><img src="docs/img/breadboard-full-system-enhanced.jpg" width="560" alt="Breadboard prototype of the electronic stethoscope with PSoC 5LP, OLED and 3D-printed sensor capsule"><br><sub>Breadboard prototype: PSoC 5LP, analog chain, OLED mode display and contact sensor.</sub></p>
 
 ### Highlights
 - Frequency bands of interest: heart 20-450 Hz, lung 100-1000 Hz, bowel 8-300 Hz; sampling rate chosen at 8 kHz.
