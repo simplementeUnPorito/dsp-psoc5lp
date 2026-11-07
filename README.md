@@ -6,7 +6,7 @@
 ## English
 
 ### Overview
-A digital electronic stethoscope built on a PSoC 5LP. It is a redesign of an earlier, fully analog stethoscope ([PVDF front-end with fixed analog filtering](https://github.com/simplementeUnPorito/analog-electronics-pcb/tree/main/projects/02-analog-electronic-stethoscope)): here the signal from a CM-01B contact microphone is digitized at 8 kHz, filtered in real time by a user-selectable linear-phase FIR filter for heart, lung or bowel sounds, and reconstructed for a speaker. Filter design was done in MATLAB/Simulink and the full chain was measured on a breadboard with an oscilloscope.
+This digital electronic stethoscope is built on a PSoC 5LP. It redesigns an earlier, fully analog stethoscope ([PVDF front-end with fixed analog filtering](https://github.com/simplementeUnPorito/analog-electronics-pcb/tree/main/projects/02-analog-electronic-stethoscope)). The signal from a CM-01B contact microphone is digitized at 8 kHz, filtered in real time by a user-selectable linear-phase FIR filter for heart, lung or bowel sounds, and reconstructed for a speaker. The filters were designed in MATLAB/Simulink, and the signal chain was measured on a breadboard with an oscilloscope.
 
 <p align="center"><img src="docs/img/breadboard-full-system-enhanced.jpg" width="560" alt="Breadboard prototype of the electronic stethoscope with PSoC 5LP, OLED and 3D-printed sensor capsule"><br><sub>Breadboard prototype: PSoC 5LP, analog chain, OLED mode display and contact sensor.</sub></p>
 
@@ -100,7 +100,7 @@ MIT (see `LICENSE`). Figures are shared for reference. Third-party datasheets an
 ## Español
 
 ### Descripción
-Estetoscopio electrónico digital sobre PSoC 5LP. Es un rediseño de un estetoscopio anterior totalmente analógico ([front-end PVDF con filtrado analógico fijo](https://github.com/simplementeUnPorito/analog-electronics-pcb/tree/main/projects/02-analog-electronic-stethoscope)): acá la señal de un micrófono de contacto CM-01B se digitaliza a 8 kHz, se filtra en tiempo real con un FIR de fase lineal seleccionable (corazón, pulmón o intestino) y se reconstruye para un parlante. Los filtros se diseñaron en MATLAB/Simulink y la cadena completa se midió en protoboard con osciloscopio.
+Este estetoscopio electrónico digital está basado en un PSoC 5LP. Rediseña un estetoscopio anterior totalmente analógico ([front-end PVDF con filtrado analógico fijo](https://github.com/simplementeUnPorito/analog-electronics-pcb/tree/main/projects/02-analog-electronic-stethoscope)). La señal de un micrófono de contacto CM-01B se digitaliza a 8 kHz, se filtra en tiempo real con un FIR de fase lineal seleccionable (corazón, pulmón o intestino) y se reconstruye para un parlante. Los filtros se diseñaron en MATLAB/Simulink y la cadena de señal se midió en protoboard con osciloscopio.
 
 ### Puntos destacados
 - Bandas de interés: corazón 20-450 Hz, pulmón 100-1000 Hz, intestino 8-300 Hz; muestreo a 8 kHz.
@@ -111,7 +111,7 @@ Estetoscopio electrónico digital sobre PSoC 5LP. Es un rediseño de un estetosc
 - Mediciones de ganancia y fase por modo y capturas de osciloscopio de señales cardíacas, pulmonares e intestinales.
 
 ### Arquitectura, hardware y estructura
-Ver el diagrama mermaid, la tabla y el árbol de la sección en inglés. `stethoscope/dsp/` los scripts, modelos y tablas de coeficientes; `stethoscope/interface/` la interfaz; `studies/` los dos estudios.
+Ver el diagrama Mermaid, la tabla y el árbol de la sección en inglés. `stethoscope/dsp/` contiene los scripts, modelos y tablas de coeficientes; `stethoscope/interface/`, la interfaz; `studies/`, los dos estudios.
 
 ### Cómo empezar
 MATLAB R2023b o superior (Señales, DSP, Control, Simscape); PSoC Creator 4.x para `studies/` (el proyecto de firmware del estetoscopio no se recuperó).
