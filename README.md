@@ -98,30 +98,87 @@ MIT (see `LICENSE`). Figures are shared for reference. Third-party datasheets an
 ### Descripción
 Este estetoscopio electrónico digital está basado en un PSoC 5LP. Rediseña un estetoscopio anterior totalmente analógico ([front-end PVDF con filtrado analógico fijo](https://github.com/simplementeUnPorito/analog-electronics-pcb/tree/main/projects/02-analog-electronic-stethoscope)). La señal de un micrófono de contacto CM-01B se digitaliza a 8 kHz, se filtra en tiempo real con un FIR de fase lineal seleccionable (corazón, pulmón o intestino) y se reconstruye para un parlante. Los filtros se diseñaron en MATLAB/Simulink y la cadena de señal se midió en protoboard con osciloscopio.
 
+<p align="center"><img src="docs/img/breadboard-full-system-enhanced.jpg" width="560" alt="Prototipo en protoboard del estetoscopio electrónico con PSoC 5LP, OLED y cápsula de sensor impresa en 3D"><br><sub>Prototipo en protoboard: PSoC 5LP, cadena analógica, pantalla OLED de modo y sensor de contacto.</sub></p>
+
 ### Puntos destacados
 - Bandas de interés: corazón 20-450 Hz, pulmón 100-1000 Hz, intestino 8-300 Hz; muestreo a 8 kHz.
-- Anti-alias Bessel de 4.º orden (1,5 kHz), mínimo que atenúa la resonancia del CM-01B a 5 kHz (pico de 20 dB); el mismo diseño se usa en la reconstrucción.
+- Filtro antialias Bessel de 4.º orden (frecuencia de paso de 1,5 kHz, fase lineal), el orden mínimo que atenúa la resonancia del CM-01B a 5 kHz (pico de 20 dB) en Simulink; el mismo diseño Bessel se reutiliza como filtro de reconstrucción.
 - ADC delta-sigma continuo (17 bits a 8 kHz, reducido a 16 bits para un rango de 0,064 V), dos PGA en cascada, DMA hacia el bloque Filter y DAC de 12 bits con saturación en 0xFF0.
-- FIR de fase lineal (ventana Kaiser, beta = 8) frente a IIR, Parks-McClellan y mínimos cuadrados; coeficientes intercambiados en ejecución.
-- Interfaz: tres botones con antirrebote por hardware y pantalla OLED SSD1306.
-- Mediciones de ganancia y fase por modo y capturas de osciloscopio de señales cardíacas, pulmonares e intestinales.
+- Se eligieron filtros FIR de fase lineal (ventana Kaiser, beta = 8) en lugar de IIR, Parks-McClellan y mínimos cuadrados para evitar distorsión de fase y ripple en la banda de paso; los coeficientes se intercambian durante la ejecución mediante la RAM del bloque Filter.
+- Interfaz: tres botones con antirrebote (selección de filtro, volumen +/-) y una OLED SSD1306 que muestra el modo y la ganancia.
+- Se midieron la ganancia y la fase de cada modo (desde el filtro antialias hasta el DAC y hasta la salida de audio) y se obtuvieron capturas de osciloscopio de señales cardíacas, pulmonares e intestinales.
 
-### Arquitectura, hardware y estructura
-Ver el diagrama Mermaid, la tabla y el árbol de la sección en inglés. `stethoscope/dsp/` contiene los scripts, modelos y tablas de coeficientes; `stethoscope/interface/`, la interfaz; `studies/`, los dos estudios.
+### Arquitectura del sistema
+```mermaid
+flowchart LR
+  CM[Micrófono de contacto CM-01B] --> AA[Antialias Bessel, 4.º orden]
+  AA --> ADC[ADC delta-sigma PSoC 5LP, 8 kHz + PGA]
+  ADC --> FIR[FIR: corazón / pulmón / intestino]
+  FIR --> DAC[DAC de 12 bits]
+  DAC --> REC[Filtro de reconstrucción Bessel]
+  REC --> LM[Etapa de audio LM386]
+  LM --> SPK[Parlante]
+  UI[Botones + OLED] -.-> FIR
+  UI -.-> ADC
+```
+En comparación con la versión analógica, el filtrado analógico fijo se reemplaza por tres filtros digitales seleccionables y un control de ganancia, y la banda puede cambiarse durante la ejecución.
+
+### Hardware
+| Componente | Función |
+|-----------|------|
+| Micrófono de contacto CM-01B | Sensor con salida de tensión en la cadena DSP (la hoja de datos no se redistribuye) |
+| PSoC 5LP | ADC delta-sigma, PGA, DMA, bloque FIR Filter, DAC de 12 bits, interfaz de botones/OLED |
+| TL072 (se probó OPA2337), LM7805 | Filtro de reconstrucción; alimentación de 12 V con regulador de 5 V |
+| LM386, woofer con red Zobel | Etapa de salida de audio |
+| OLED SSD1306, 3 pulsadores | Interfaz de modo y volumen |
+| Osciloscopio, generador de funciones | Medición |
+
+### Estructura del repositorio
+```
+stethoscope/
+  dsp/                Scripts MATLAB, modelos Simulink/Simscape, tablas de coeficientes FIR, STL de la cápsula del sensor
+  interface/          Circuito de botones/antirrebote y descripción de la interfaz
+  docs/               Referencia a figuras y mediciones
+studies/
+  fir-vs-iir-bandpass-on-psoc/    IIR Chebyshev frente a FIR Parks-McClellan en el bloque Filter
+  realtime-iir-uart-validation/   Firmware IIR + captura MATLAB por UART
+docs/img/             Figuras; capturas de measurements/ y oscilloscope/
+```
 
 ### Cómo empezar
-MATLAB R2023b o superior (Señales, DSP, Control, Simscape); PSoC Creator 4.x para `studies/` (el proyecto de firmware del estetoscopio no se recuperó).
+- MATLAB R2023b o posterior con los toolboxes Signal Processing, DSP System, Control System y Simscape para `stethoscope/dsp/`.
+- PSoC Creator 4.x para los proyectos en `studies/` (el proyecto de firmware del propio estetoscopio no pudo recuperarse; consultar `stethoscope/dsp/README.md`).
 
 ### Resultados
-Ver las figuras de arriba, `docs/img/measurements/` y `docs/img/oscilloscope/`. Limitaciones informadas: ruido de fuente (resuelto con fuente independiente), ripple de salida mayor al estimado, atenuación en el buffer del PSoC y un LM386 que no pudo excitar el woofer usado como carga.
+
+**Banco de filtros FIR (ventana Kaiser, 8 kHz)**
+<table><tr>
+<td align="center" width="33%"><img src="docs/img/fir-heart.jpg" width="380" alt="Banda cardíaca, 20 a 450 Hz"><br><sub>Banda cardíaca, 20 a 450 Hz</sub></td><td align="center" width="33%"><img src="docs/img/fir-lung.jpg" width="380" alt="Banda pulmonar, 100 a 1000 Hz"><br><sub>Banda pulmonar, 100 a 1000 Hz</sub></td><td align="center" width="33%"><img src="docs/img/fir-bowel.jpg" width="380" alt="Banda intestinal, 8 a 300 Hz"><br><sub>Banda intestinal, 8 a 300 Hz</sub></td>
+</tr></table>
+
+**Mediciones de extremo a extremo**
+<table><tr>
+<td align="center" width="33%"><img src="docs/img/fir-modes-adc-to-psoc-output.jpg" width="380" alt="Tres modos, desde la entrada del ADC hasta la salida del PSoC"><br><sub>Tres modos, desde la entrada del ADC hasta la salida del PSoC</sub></td><td align="center" width="33%"><img src="docs/img/chain-to-reconstruction-heart.jpg" width="380" alt="Modo cardíaco hasta el filtro de reconstrucción"><br><sub>Modo cardíaco hasta el filtro de reconstrucción</sub></td><td align="center" width="33%"><img src="docs/img/oscilloscope/heart.png" width="380" alt="Sonido cardíaco: entrada (rosa) frente a salida filtrada (verde)"><br><sub>Sonido cardíaco: entrada (rosa) frente a salida filtrada (verde)</sub></td>
+</tr><tr>
+<td align="center" width="33%"><img src="docs/img/oscilloscope/lung-inspiration.jpg" width="380" alt="Sonido pulmonar durante la inspiración"><br><sub>Sonido pulmonar durante la inspiración</sub></td><td align="center" width="33%"><img src="docs/img/oscilloscope/diaphragm-speaking.png" width="380" alt="Diafragma durante el habla"><br><sub>Diafragma durante el habla</sub></td><td align="center" width="33%"><img src="docs/img/photos/breadboard-closeup.jpg" width="380" alt="Primer plano de la cadena de señal en protoboard"><br><sub>Primer plano de la cadena de señal en protoboard</sub></td>
+</tr></table>
+
+**Mediciones de banco**
+<table><tr>
+<td align="center" width="33%"><img src="docs/img/photos/03-scope-waveforms.jpg" width="280" alt="Captura de osciloscopio de los canales de sonido cardíaco"><br><sub>Captura de osciloscopio de los canales de sonido cardíaco</sub></td><td align="center" width="33%"><img src="docs/img/photos/04-scope-heart-signal.jpg" width="280" alt="Señal filtrada y ráfagas en dos canales"><br><sub>Señal filtrada y ráfagas en dos canales</sub></td><td align="center" width="33%"><img src="docs/img/photos/05-scope-bench.jpg" width="280" alt="Forma de onda pulsada junto al protoboard"><br><sub>Forma de onda pulsada junto al protoboard</sub></td>
+</tr></table>
+
+Más material: ganancia y fase medidas en [`docs/img/measurements/`](docs/img/measurements) y capturas de osciloscopio en [`docs/img/oscilloscope/`](docs/img/oscilloscope). Estudios: [FIR frente a IIR](studies/fir-vs-iir-bandpass-on-psoc/README.md), [IIR por UART](studies/realtime-iir-uart-validation/README.md).
+
+Limitaciones informadas: ruido de la fuente (resuelto con una fuente independiente), ripple de salida mayor que el estimado, atenuación en el buffer de entrada del PSoC y un LM386 que no pudo excitar el woofer utilizado como carga. Las correcciones propuestas son una etapa clase AB o una etapa de potencia dedicada y mejores amplificadores operacionales.
 
 
 ### Antecesor analógico
-La versión totalmente analógica (sensor PVDF, amplificador de carga, INA128, PCB fabricada) es un proyecto aparte: [estetoscopio analógico](https://github.com/simplementeUnPorito/analog-electronics-pcb/tree/main/projects/02-analog-electronic-stethoscope).
+La versión totalmente analógica del estetoscopio (sensor PVDF, amplificador de carga, INA128, PCB fabricada) es un proyecto aparte: [analog-electronics-pcb / estetoscopio electrónico analógico](https://github.com/simplementeUnPorito/analog-electronics-pcb/tree/main/projects/02-analog-electronic-stethoscope).
 
 ### Equipo y créditos
 - Estetoscopio digital (2025): Elías Álvarez y Tania Romero, Universidad Católica "Nuestra Señora de la Asunción" (Paraguay).
-- Estudios: Elías David Álvarez Martínez y Tania Patricia Romero Centurión, 2024; tutor Lic. Federico Daniel Morán Fretes.
+- Estudios en `studies/`: Elías David Álvarez Martínez y Tania Patricia Romero Centurión, 2024; asesor Lic. Federico Daniel Morán Fretes.
 
 ### Licencia
-MIT (ver `LICENSE`). Las figuras se comparten como referencia.
+MIT (consultar `LICENSE`). Las figuras se comparten como referencia. Las hojas de datos y el código de terceros se enlazan, no se redistribuyen.
