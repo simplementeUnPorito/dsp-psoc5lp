@@ -127,5 +127,5 @@ disp("Puerto serial cerrado")
 
 
 
-%save('D:\Google Drive\TESIS FM\Scrips Matlab Agua\datos\eco_sub800_512.mat','eco_med')
+% save(fullfile('<DATA_ROOT>', 'eco_sub800_512.mat'), 'eco_med')
 
