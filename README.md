@@ -1,6 +1,6 @@
 <p align="center"><img src="docs/img/banner.svg" width="100%" alt="Electronic Stethoscope &amp; Real-Time DSP"></p>
 
-<p align="center"><img src="https://img.shields.io/badge/PSoC-5LP-1f6feb"> <img src="https://img.shields.io/badge/MATLAB-Simulink-orange"> <img src="https://img.shields.io/badge/OrCAD-PSpice-informational"> <img src="https://img.shields.io/badge/EasyEDA-PCB-informational"> <img src="https://img.shields.io/badge/C-firmware-555"> <img src="https://img.shields.io/badge/License-MIT-lightgrey"></p>
+<p align="center"><img src="https://img.shields.io/badge/Year-2025-555"> <img src="https://img.shields.io/badge/PSoC-5LP-1f6feb"> <img src="https://img.shields.io/badge/MATLAB-Simulink-orange"> <img src="https://img.shields.io/badge/OrCAD-PSpice-informational"> <img src="https://img.shields.io/badge/EasyEDA-PCB-informational"> <img src="https://img.shields.io/badge/C-firmware-555"> <img src="https://img.shields.io/badge/License-MIT-lightgrey"></p>
 <p align="center"><a href="#english">English</a> · <a href="#español">Español</a></p>
 
 ## English
