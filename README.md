@@ -77,6 +77,8 @@ More: measured gain and phase in [`docs/img/measurements/`](docs/img/measurement
 
 Reported limitations: supply noise (solved with an independent supply), output ripple above the estimate, attenuation in the PSoC input buffer, and an LM386 that could not drive the woofer used as load; proposed fixes are a class-AB or dedicated power stage and better op-amps.
 
+A PCB layout for the analog filter stage was started in EasyEDA but not routed; the work-in-progress project is kept in `hardware/easyeda/` for reference.
+
 ### Analog predecessor
 The fully analog version of the stethoscope (PVDF sensor, charge amplifier, INA128, fabricated PCB) is a separate project: [analog-electronics-pcb / analog electronic stethoscope](https://github.com/simplementeUnPorito/analog-electronics-pcb/tree/main/projects/02-analog-electronic-stethoscope).
 
@@ -108,6 +110,8 @@ MATLAB R2023b o superior (Señales, DSP, Control, Simscape); PSoC Creator 4.x pa
 
 ### Resultados
 Ver las figuras de arriba, `docs/img/measurements/` y `docs/img/oscilloscope/`. Limitaciones informadas: ruido de fuente (resuelto con fuente independiente), ripple de salida mayor al estimado, atenuación en el buffer del PSoC y un LM386 que no pudo excitar el woofer usado como carga.
+
+Se empezó un diseño de PCB para la etapa de filtros analógicos en EasyEDA, sin rutear; el proyecto en curso queda en `hardware/easyeda/` como referencia.
 
 ### Antecesor analógico
 La versión totalmente analógica (sensor PVDF, amplificador de carga, INA128, PCB fabricada) es un proyecto aparte: [estetoscopio analógico](https://github.com/simplementeUnPorito/analog-electronics-pcb/tree/main/projects/02-analog-electronic-stethoscope).
