@@ -13,7 +13,7 @@ This digital electronic stethoscope is built on a PSoC 5LP. It redesigns an earl
 ### Highlights
 - Frequency bands of interest: heart 20-450 Hz, lung 100-1000 Hz, bowel 8-300 Hz; sampling rate chosen at 8 kHz.
 - 4th-order Bessel anti-alias filter (1.5 kHz pass frequency, linear phase), the minimum order that attenuates the CM-01B 5 kHz resonance (20 dB peak) in Simulink; the same Bessel design is reused as reconstruction filter.
-- Delta-sigma ADC in continuous mode (17 bits at 8 kHz, reduced to 16 bits for a 0.064 V range), two cascaded PGAs, DMA into the PSoC Filter block and a 12-bit DAC with saturation at 0xFF0.
+- Delta-sigma ADC in continuous mode (17 bits at 8 kHz, reduced to 16 bits for a 0.064 V range), two cascaded PGAs, DMA into the PSoC 5LP hardware Digital Filter Block (DFB) and a 12-bit DAC with saturation at 0xFF0.
 - Linear-phase FIR filters (Kaiser window, beta = 8) chosen over IIR, Parks-McClellan and least-squares to avoid phase distortion and passband ripple; coefficients swapped at run time through the Filter block RAM.
 - User interface: three debounced buttons (filter select, volume +/-) and an SSD1306 OLED showing mode and gain.
 - Measured gain and phase of every mode (anti-alias to DAC and to the audio output) and oscilloscope captures of heart, lung and bowel signals.
@@ -103,7 +103,7 @@ Este estetoscopio electrónico digital está basado en un PSoC 5LP. Rediseña un
 ### Puntos destacados
 - Bandas de interés: corazón 20-450 Hz, pulmón 100-1000 Hz, intestino 8-300 Hz; muestreo a 8 kHz.
 - Filtro antialias Bessel de 4.º orden (frecuencia de paso de 1,5 kHz, fase lineal), el orden mínimo que atenúa la resonancia del CM-01B a 5 kHz (pico de 20 dB) en Simulink; el mismo diseño Bessel se reutiliza como filtro de reconstrucción.
-- ADC delta-sigma continuo (17 bits a 8 kHz, reducido a 16 bits para un rango de 0,064 V), dos PGA en cascada, DMA hacia el bloque Filter y DAC de 12 bits con saturación en 0xFF0.
+- ADC delta-sigma continuo (17 bits a 8 kHz, reducido a 16 bits para un rango de 0,064 V), dos PGA en cascada, DMA hacia el bloque de filtrado digital por hardware (DFB) del PSoC 5LP y DAC de 12 bits con saturación en 0xFF0.
 - Se eligieron filtros FIR de fase lineal (ventana Kaiser, beta = 8) en lugar de IIR, Parks-McClellan y mínimos cuadrados para evitar distorsión de fase y ripple en la banda de paso; los coeficientes se intercambian durante la ejecución mediante la RAM del bloque Filter.
 - Interfaz: tres botones con antirrebote (selección de filtro, volumen +/-) y una OLED SSD1306 que muestra el modo y la ganancia.
 - Se midieron la ganancia y la fase de cada modo (desde el filtro antialias hasta el DAC y hasta la salida de audio) y se obtuvieron capturas de osciloscopio de señales cardíacas, pulmonares e intestinales.
